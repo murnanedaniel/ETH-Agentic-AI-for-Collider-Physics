@@ -218,19 +218,11 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
   {
     url: `${C2031}/foundation`,
     embedLabel: "Collider 2031 · Foundation Space",
-    heading: "Foundation Space, and an anomaly",
+    heading: "Foundation Space, an anomaly, and a simulation",
     say: [
-      "Maja is working on an idea in Foundation Space — a 100,000-dimensional latent space that captures the processes of the Standard Model: an embedding of the reconstruction and analysis models across the different collaborations. Because all data is collected in real time, events get embedded into this space as they arrive. Some ATLAS and CMS events land outside the Standard-Model surface — usually just detector miscalibrations that a calibration agent picks up.",
-      "How do you interpolate a surface in 100,000 dimensions? You need a differentiable simulation — and all simulation has been differentiable for a couple of years, since Geant 5. Over the last few days, Maja noticed a weird little anomaly that appears on the surface, leaves it, and comes back. The agents haven't been able to figure out what it is, and it's not a detector miscalibration.",
-    ],
-  },
-  {
-    url: `${C2031}/simulation`,
-    embedLabel: "Collider 2031 · Simulation builder",
-    heading: "She builds a simulation",
-    say: [
-      "These unsolved anomalies are handed out as bounties. Looking at the bounty, there's an ATLAS event and a CMS event at about the same time; because we can attach anomaly scores all the way down to individual hits, we can see both have an anomalous part, happening simultaneously across both detectors over a few minutes.",
-      "Maja has a theory, but to test it she has to simulate it. By 2031 all simulations are trivial — nobody looks at CMSSW or Athena anymore; you describe the simulation in natural language. Being a climate and planetary scientist, she wants to simulate a solar flare with a program she knows, Solaris, at its M-class settings. That hasn't been simulated before, so the agent finds the program and inserts it into the ATLAS and CMS geometries. A few hundred million events should do it.",
+      "Maja is working on an idea in Foundation Space — a 100,000-dimensional latent space that captures the processes of the Standard Model: an embedding of the reconstruction and analysis models across the different collaborations. Because all data is collected in real time, events get embedded into this space as they arrive. Some ATLAS and CMS events land outside the Standard-Model surface — usually just detector miscalibrations that a calibration agent picks up. How do you interpolate a surface in 100,000 dimensions? You need a differentiable simulation — and all simulation has been differentiable for a couple of years, since Geant 5.",
+      "Over the last few days, Maja noticed a weird little anomaly that appears on the surface, leaves it, and comes back — and the agents can't figure out what it is. These unsolved anomalies are handed out as bounties. Looking at it, there's an ATLAS event and a CMS event at about the same time; because we can attach anomaly scores all the way down to individual hits, both have an anomalous part, happening simultaneously across both detectors over a few minutes.",
+      "Maja has a theory, but to test it she has to simulate it — so, right here in Foundation Space, she builds one. By 2031 all simulations are trivial; nobody looks at CMSSW or Athena anymore, you describe it in natural language. Being a climate and planetary scientist, she wants to simulate a solar flare with a program she knows, Solaris, at its M-class settings. That hasn't been simulated before, so the agent finds the program and inserts it into the ATLAS and CMS geometries. A few hundred million events should do it.",
     ],
   },
   {
@@ -261,21 +253,51 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
     ],
   },
   {
-    url: `${C2031}/erik`,
-    embedLabel: "Collider 2031 · Erik's path",
-    heading: "The other version: Erik",
+    url: `${C2031}/erik?era=2028`,
+    embedLabel: "Collider 2031 · Erik · 2028",
+    heading: "The other version: Erik, 2028",
     say: [
       "There's another version of this story. Back in 2028, Erik starts his PhD, super excited to learn how particle physics is done — searching for BSM resonances on Run 3 data. He uses AutoAna, where analysis is partly automated by agents. He specifies the analysis, discusses it with the agentic system, tightens cuts, runs on a small unblinded subset for sanity-check histograms, takes it to his weekly supervisor meeting. There's a lot of human in the loop, and he comes away feeling like he's done some physics.",
-      "Jump to 2029. AutoAna has been deprecated — a paper running for two years proved conclusively that including humans in the loop reduced sensitivity, because it introduces bias and inefficiency. So most analyses are now forbidden from human interaction; there isn't even collaboration review, because an approval agent is more effective. Erik's job is to let the agent try thousands of configurations and tweak here and there — he looks like a manager. At his defence, the committee asks why he chose X, Y, Z, and his answer is, more or less, \"because the agent told me to.\" He passes, but leaves physics, disillusioned. And because people aren't doing analyses, ATLAS membership has plummeted — from about 5,200 in 2028 to around 1,500. The agentic analysis made precision and discovery better; it's just not compatible with how a large collaboration staffs thousands of members.",
     ],
   },
   {
-    url: `${C2031}/elena`,
-    embedLabel: "Collider 2031 · Elena's path",
-    heading: "A better version: Elena",
+    url: `${C2031}/erik?era=2029`,
+    embedLabel: "Collider 2031 · Erik · 2029",
+    heading: "Erik, 2029 — the manager",
+    say: [
+      "Jump to 2029. AutoAna has been deprecated — a paper running for two years proved conclusively that including humans in the loop reduced sensitivity, because it introduces bias and inefficiency. So most analyses are now forbidden from human interaction; there isn't even collaboration review, because an approval agent is more effective. Erik's job is to let the agent try thousands of configurations and tweak here and there — he looks like a manager.",
+    ],
+  },
+  {
+    url: `${C2031}/erik?stage=defense`,
+    embedLabel: "Collider 2031 · Erik · defence",
+    heading: "Erik's defence — and exit",
+    say: [
+      "At his defence, the committee asks why he chose X, Y, Z, and his answer is, more or less, \"because the agent told me to.\" He passes, but leaves physics, disillusioned. And because people aren't doing analyses, ATLAS membership has plummeted — from about 5,200 in 2028 to around 1,500. The agentic analysis made precision and discovery better; it's just not compatible with how a large collaboration staffs thousands of members.",
+    ],
+  },
+  {
+    url: `${C2031}/elena?era=2029`,
+    embedLabel: "Collider 2031 · Elena · 2029 · design",
+    heading: "A better version: Elena, 2029",
     say: [
       "That was a bit of a bummer, so let me do one more — Elena, who I'll admit I haven't fully fleshed out. She starts her PhD in 2029, when agentic analysis has removed the human from the loop, so her advisor suggests she build her own experiment: a search for milli-charged particles from a dark-photon sector. She runs literature reviews with agents, tries different detector geometries — much of which can be optimised automatically, since the simulation is differentiable — and writes a TDR for a little tabletop experiment.",
-      "She starts her own small collaboration, MACE — her group plus a few others — and designs a tabletop experiment that's much cheaper thanks to 3D printing and agent-run robotics. She's tinkering now, picking up skills in materials, electronics, experiment design. Around 2030 she commissions it and traps her first ions, making a dent in the dark-photon constraint space. By 2031 she takes a year of data, unblinds it just before her defence — not quite as constrained as she'd hoped, but a real dent — and commits it to Foundation Space so phenomenologists and experimentalists can use it. That's a more encouraging world: people empowered to do smaller, cheaper experiments, compatible with large collaborations that automate the analysis and reconstruction we all know and love.",
+    ],
+  },
+  {
+    url: `${C2031}/elena?era=2031`,
+    embedLabel: "Collider 2031 · Elena · 2031 · run",
+    heading: "Elena, 2031 — building and taking data",
+    say: [
+      "She starts her own small collaboration, MACE — her group plus a few others — and designs a tabletop experiment that's much cheaper thanks to 3D printing and agent-run robotics. She's tinkering now, picking up skills in materials, electronics, experiment design. Around 2030 she commissions it and traps her first ions, making a dent in the dark-photon constraint space. By 2031 she takes a year of data.",
+    ],
+  },
+  {
+    url: `${C2031}/elena?era=2032`,
+    embedLabel: "Collider 2031 · Elena · 2032 · commit",
+    heading: "Elena, 2032 — unblind and commit",
+    say: [
+      "She unblinds her year of data just before her defence — not quite as constrained as she'd hoped, but a real dent — and commits it to Foundation Space so phenomenologists and experimentalists can use it. That's a more encouraging world: people empowered to do smaller, cheaper experiments, compatible with large collaborations that automate the analysis and reconstruction we all know and love.",
     ],
   },
 
@@ -288,12 +310,27 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
     ],
   },
   {
-    scene: "deliverables2026",
-    step: 1,
-    heading: "One: ColliderML, for real",
+    url: "https://opendatadetector.github.io/ColliderML/",
+    embedLabel: "ColliderML · the open dataset",
+    heading: "One: ColliderML — fully open",
     say: [
-      "ColliderML is a fully-open simulation system on a hypothetical detector called the Open Data Detector. I wish I had more than ten seconds for this. Everything is open, so you can run it on your laptop and build workflows. You add generation stages — how do we generate? MadGraph plus Pythia. How do we simulate? Geant 4. What's the pile-up? How do we digitise? You reconstruct with ACTS, the state-of-the-art tracking ATLAS uses, or Pandora, which FCC will use. It's all built in, and you can pull that configuration and run it on your laptop.",
-      "Or you can ask a copilot — change ttbar to Z→μμ — and it looks at your workflow and suggests the updates. Earlier, when I showed the ColliderLab simulation, that was a toy; this really works. You can simulate on your laptop, or earn points by submitting good models and running them on Perlmutter for millions of events. The points all run through Hugging Face, which has been generous about hosting the data.",
+      "ColliderML is a fully-open simulation system on a hypothetical detector called the Open Data Detector. I wish I had more than ten seconds for this. Everything is open, so you can run it on your laptop and build workflows — and you start by adding generation stages. How do we generate? MadGraph plus Pythia.",
+    ],
+  },
+  {
+    url: "https://opendatadetector.github.io/ColliderML/guide/simulation.html",
+    embedLabel: "ColliderML · generate → simulate → reconstruct",
+    heading: "The pipeline, end to end",
+    say: [
+      "How do we simulate? Geant 4. What's the pile-up? How do we digitise? You reconstruct with ACTS — the state-of-the-art tracking ATLAS uses — or Pandora, which FCC will use. It's all built in, and you can pull that configuration and run it on your laptop. Or you can ask a copilot — change ttbar to Z→μμ — and it looks at your workflow and suggests the updates. Earlier, when I showed the ColliderLab simulation, that was a toy; this really works.",
+    ],
+  },
+  {
+    url: "https://opendatadetector.github.io/ColliderML/guide/remote-simulation.html",
+    embedLabel: "ColliderML · laptop or Perlmutter",
+    heading: "Run it — laptop, or Perlmutter",
+    say: [
+      "You can simulate on your laptop, or earn points by submitting good models and running them on Perlmutter for millions of events. The points all run through Hugging Face, which has been generous about hosting the data.",
     ],
   },
   {
