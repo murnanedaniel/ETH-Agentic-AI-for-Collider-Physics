@@ -314,15 +314,15 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
     embedLabel: "ColliderML · the open dataset",
     heading: "One: ColliderML — fully open",
     say: [
-      "ColliderML is a fully-open simulation system on a hypothetical detector called the Open Data Detector. I wish I had more than ten seconds for this. Everything is open, so you can run it on your laptop and build workflows — and you start by adding generation stages. How do we generate? MadGraph plus Pythia.",
+      "ColliderML is a fully-open simulation system on a hypothetical detector called the Open Data Detector. I wish I had more than ten seconds for this. Everything is open — the dataset is about 30 terabytes of full simulation across a range of physics channels — so you can run it on your laptop and build your own workflows.",
     ],
   },
   {
-    url: "https://opendatadetector.github.io/ColliderML/guide/simulation.html",
-    embedLabel: "ColliderML · generate → simulate → reconstruct",
-    heading: "The pipeline, end to end",
+    url: "https://opendatadetector.github.io/ColliderML/builder.html",
+    embedLabel: "ColliderML · workflow builder",
+    heading: "The workflow builder",
     say: [
-      "How do we simulate? Geant 4. What's the pile-up? How do we digitise? You reconstruct with ACTS — the state-of-the-art tracking ATLAS uses — or Pandora, which FCC will use. It's all built in, and you can pull that configuration and run it on your laptop. Or you can ask a copilot — change ttbar to Z→μμ — and it looks at your workflow and suggests the updates. Earlier, when I showed the ColliderLab simulation, that was a toy; this really works.",
+      "You build a workflow stage by stage. How do we generate? MadGraph plus Pythia. How do we simulate? Geant 4. What's the pile-up? How do we digitise? You reconstruct with ACTS — the state-of-the-art tracking ATLAS uses — or Pandora, which FCC will use. It's all built in, and you can pull that configuration and run it on your laptop. Or you can ask a copilot — change ttbar to Z→μμ — and it looks at your workflow and suggests the updates. Earlier, when I showed the ColliderLab simulation, that was a toy; this really works.",
     ],
   },
   {
