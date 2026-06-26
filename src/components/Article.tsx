@@ -36,7 +36,7 @@ function SceneEmbed({ section }: { section: ArticleSection }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const show = useNearViewport(ref);
   const label = labelFor(section.scene!);
-  const src = `${BASE}/embed/?scene=${section.scene}`;
+  const src = `${BASE}/embed/?scene=${section.scene}${section.step ? `&step=${section.step}` : ""}`;
   return (
     <figure ref={ref} className="my-7">
       <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden ink-shadow border border-ink/12 bg-canvas">
@@ -183,10 +183,11 @@ export function Article() {
 
         <footer className="mt-16 pt-8 border-t border-ink/10 font-mono text-[12px] text-ink/45 leading-relaxed">
           <p>
-            Narration transcribed from the CERN recording (25 June 2026, 0:00–46:08)
-            and lightly cleaned. The 2031 beats embed the live Collider 2031 platform;
-            click one to explore. Teaching and the Claude final slide were skipped on
-            the day and are omitted here.
+            Narration transcribed from the CERN recording (25 June 2026) and lightly
+            cleaned. The 2031 beats embed the live Collider 2031 platform — click one to
+            explore. The teaching slide (flipped past on the day) and the ScienceDash /
+            ChATLAS deliverables (raised in the Q&amp;A) are restored here so every beat is
+            present. Only the Claude final slide, never shown, is omitted.
           </p>
           <p className="mt-3">
             <a href={`${BASE}/`} className="underline underline-offset-2 hover:text-ink">↩ back to the live talk</a>

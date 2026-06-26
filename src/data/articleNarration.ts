@@ -17,6 +17,7 @@ const C2031 = "https://www.danielmurnane.com/Collider-2031";
 
 export type ArticleSection = {
   scene?: SceneId;       // deck scene embed (/embed)
+  step?: number;         // starting step for the scene embed (default 0)
   url?: string;          // external embed (Collider 2031 route)
   embedLabel?: string;   // caption for url embeds
   heading?: string;
@@ -142,9 +143,12 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
   },
   {
     scene: "statsFeint",
-    heading: "Not just particle physics",
+    heading: "Test-driven physics",
     say: [
-      "And it's not just particle physics — it's every physics domain, every science domain. This snapshot is incomplete; I didn't thoroughly search the last two months of the other fields. But if you need convincing, I point to this Matthew Schwartz paper, which he co-wrote with Claude. This is a serious guy — a textbook-writing, serious theoretical physicist. Whenever I'm debating theorists who push back — sure, you can do it for experiment or phenomenology, but theory is serious — I point to a serious theorist who wanted to make Claude his co-author.",
+      "Specifically on agentic particle physics, this is a little snapshot of where things were — there were a couple of very early adopters.",
+      "Test-driven development is good physics practice now. I write software tests, but I also write physics tests: I have a physical intuition for what some analytical solution should give, so I hard-code those analytical solutions as unit tests. Another example, from last week — I took my thesis from a long time ago and ran it through Claude. I was terrified it would find errors, and it did, which is fine. But I'd spent years on those analytical solutions, and it solved them over a weekend, which is depressing. Then it could use them as test-driven development: for a composite-Higgs model, if it builds new models, they should reduce back to those analytical solutions. Write the test first, make sure it fails, do the research, make sure it passes — that little loop is super powerful.",
+      "Can the whole loop be automated? I don't think so — not yet. I don't write code anymore, but explaining what the test should do — the edge cases, the corner cases of a physics scenario — is still a useful human input. Maybe for another few months.",
+      "And it's not just particle physics — it's every physics domain, every science domain. This snapshot is incomplete; I didn't thoroughly search the last two months of the other fields. But if you need convincing, I point to this Matthew Schwartz paper, which he co-wrote with Claude. This is a serious guy — a textbook-writing theoretical physicist. Whenever I'm debating theorists who push back — sure, you can do it for experiment or phenomenology, but theory is serious — I point to a serious theorist who wanted to make Claude his co-author.",
     ],
   },
 
@@ -176,6 +180,14 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
     heading: "A collaboration lottery",
     say: [
       "So I ran a lottery: randomly pick two people with a strong bridging connection, from two different sections of NBI, and have Claude cook up a grant proposal. It did pretty well. I emailed it to them beforehand — I was worried they'd be offended — and they said it basically looked reasonable. One group is condensed matter, the other paleoclimatology; these are not people bumping into each other over coffee. It seems obvious to me this kind of tool should be built into institutes.",
+    ],
+  },
+  {
+    scene: "faculty2031Teaching",
+    heading: "Teaching — which I skipped on the day",
+    say: [
+      "Teaching, maybe I'll skip — I'm taking longer than I thought.",
+      "[I flipped past this slide live; here's what it argued.] When every undergraduate has a world-class expert in their pocket, students will still want in-person education — to network, to make friends, for a human touch. But presenting new material in a traditional lecture won't make sense when an agent can deliver something more personalised at home. So: reverse lectures — students build intuition with the agent, and the in-person session becomes student-to-student teaching, discussion, project work. Harvard, Stanford and Carnegie Mellon are already testing this, with students progressing about twice as fast.",
     ],
   },
   {
@@ -277,10 +289,27 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
   },
   {
     scene: "deliverables2026",
-    heading: "ColliderML, for real",
+    step: 1,
+    heading: "One: ColliderML, for real",
     say: [
       "ColliderML is a fully-open simulation system on a hypothetical detector called the Open Data Detector. I wish I had more than ten seconds for this. Everything is open, so you can run it on your laptop and build workflows. You add generation stages — how do we generate? MadGraph plus Pythia. How do we simulate? Geant 4. What's the pile-up? How do we digitise? You reconstruct with ACTS, the state-of-the-art tracking ATLAS uses, or Pandora, which FCC will use. It's all built in, and you can pull that configuration and run it on your laptop.",
       "Or you can ask a copilot — change ttbar to Z→μμ — and it looks at your workflow and suggests the updates. Earlier, when I showed the ColliderLab simulation, that was a toy; this really works. You can simulate on your laptop, or earn points by submitting good models and running them on Perlmutter for millions of events. The points all run through Hugging Face, which has been generous about hosting the data.",
+    ],
+  },
+  {
+    scene: "deliverables2026",
+    step: 2,
+    heading: "Two: ScienceDash, the dashboard I actually use",
+    say: [
+      "The dashboard from the 2028 thought experiment isn't speculative — it's the real seed of it, and I run it today. [As I mentioned in the discussion:] I have an open Claude setup at home — a little home box, a PC sitting in the corner on top of a paint can, running Claude all the time, managing my projects. That's also the scariest part: if someone got into that system they could destroy my life, and worse, a lot of scientific data. The same question applies to ATLAS — how much privilege do you give an agent on a multi-billion-franc system that could, in principle, find a way to delete data?",
+    ],
+  },
+  {
+    scene: "deliverables2026",
+    step: 3,
+    heading: "Three: ChATLAS, retrieval on closed data",
+    say: [
+      "The third is ChATLAS, an AI assistant for ATLAS. [This came up in the Q&A.] We've found that even good old fine-tuning of embeddings improves our ability to find relevant information that's hidden behind ATLAS's login wall — information that, in principle, shouldn't be in the training data of a GPT or a Claude. Fine-tuning takes us from about 30% retrieval accuracy to 70%. It's deep in the weeds, but it points to a space where we can still use our closed data to do things that are good for us as a community.",
       "And maybe I'm going to leave it there. Maybe in the discussion later I can show one of the others — but I'll leave it there. Thank you.",
     ],
   },
