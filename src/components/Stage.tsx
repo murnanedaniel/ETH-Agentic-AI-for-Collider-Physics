@@ -8,82 +8,8 @@ import { useElapsed } from "@/lib/useElapsed";
 import { PresenterClock } from "./PresenterClock";
 import { PaperRollOverlay } from "./PaperRollOverlay";
 import { TempHud } from "./TempHud";
-import { TitleSlide } from "./scenes/TitleSlide";
-import { RateRamp } from "./scenes/RateRamp";
-import { GnnSolution } from "./scenes/GnnSolution";
-import { SpeedJourney } from "./scenes/SpeedJourney";
-import { InnerLoopHistory } from "./scenes/InnerLoopHistory";
-import { QuirksAside } from "./scenes/QuirksAside";
-import { LoopsVizMiddle } from "./scenes/LoopsVizMiddle";
-import { LoopsVizOuter } from "./scenes/LoopsVizOuter";
 import { PlaceholderScene } from "./scenes/PlaceholderScene";
-import { EasterRelease } from "./scenes/EasterRelease";
-import { EasterBug } from "./scenes/EasterBug";
-import { RorvigRunPhone } from "./scenes/RorvigRunPhone";
-import { EasterSmokingGun } from "./scenes/EasterSmokingGun";
-import { EasterCrossEval } from "./scenes/EasterCrossEval";
-import { EasterDispatch } from "./scenes/EasterDispatch";
-import { EasterArchitecture } from "./scenes/EasterArchitecture";
-import { EasterDiscovery } from "./scenes/EasterDiscovery";
-import { EasterReveal } from "./scenes/EasterReveal";
-import { EasterThesis } from "./scenes/EasterThesis";
-import { EasterWhyPossible } from "./scenes/EasterWhyPossible";
-import { StatsFeint } from "./scenes/StatsFeint";
-import { NbiGraph } from "./scenes/NbiGraph";
-import { Matchmaking } from "./scenes/Matchmaking";
-import { Faculty2031Teaching } from "./scenes/Faculty2031Teaching";
-import { PhDPedagogy } from "./scenes/PhDPedagogy";
-import { NBIAINativeCallToAction } from "./scenes/NBIAINativeCallToAction";
-import { ClaudeFinalSlide } from "./scenes/ClaudeFinalSlide";
-import { CalendarFlip2028, CalendarFlip2031, CalendarFlip2026Back } from "./scenes/CalendarFlip";
-import { Platform2028 } from "./scenes/Platform2028";
-import { ColliderLabLaunch } from "./scenes/ColliderLabLaunch";
-import { Deliverables2026 } from "./scenes/Deliverables2026";
-import { LoopsViz } from "./scenes/LoopsViz";
-
-type SceneComponent = (props: {
-  step: number;
-  onAdvance?: () => void;
-}) => React.ReactElement;
-
-const SCENE_COMPONENTS: Partial<Record<SceneId, SceneComponent>> = {
-  title: TitleSlide,
-  rateRamp: RateRamp,
-  gnnSolution: GnnSolution,
-  speedJourney: SpeedJourney,
-  loopsViz: LoopsViz as unknown as SceneComponent,
-  quirksAside: QuirksAside as unknown as SceneComponent,
-  innerLoopHistory: InnerLoopHistory as unknown as SceneComponent,
-  loopsVizMiddle: LoopsVizMiddle as unknown as SceneComponent,
-  loopsVizOuter: LoopsVizOuter as unknown as SceneComponent,
-  easter1Release: EasterRelease as unknown as SceneComponent,
-  easter2Bug: EasterBug as unknown as SceneComponent,
-  rorvigRunPhone: RorvigRunPhone as unknown as SceneComponent,
-  easter3SmokingGun: EasterSmokingGun as unknown as SceneComponent,
-  easter4CrossEval: EasterCrossEval as unknown as SceneComponent,
-  easter5Dispatch: EasterDispatch as unknown as SceneComponent,
-  easter6Architecture: EasterArchitecture as unknown as SceneComponent,
-  easter7Discovery: EasterDiscovery as unknown as SceneComponent,
-  easter8Reveal: EasterReveal as unknown as SceneComponent,
-  easter9Thesis: EasterThesis as unknown as SceneComponent,
-  easter10WhyPossible: EasterWhyPossible as unknown as SceneComponent,
-  statsFeint: StatsFeint as unknown as SceneComponent,
-  // ── Part 2 · 2028 concept (light) ──
-  calendarFlip2028: CalendarFlip2028 as unknown as SceneComponent,
-  platform2028: Platform2028 as unknown as SceneComponent,
-  nbiGraph: NbiGraph as unknown as SceneComponent,
-  matchmaking: Matchmaking as unknown as SceneComponent,
-  faculty2031Teaching: Faculty2031Teaching as unknown as SceneComponent,
-  phdPedagogy: PhDPedagogy as unknown as SceneComponent,
-  // ── Part 2 climax · 2031 platform (external) ──
-  calendarFlip2031: CalendarFlip2031 as unknown as SceneComponent,
-  colliderLabLaunch: ColliderLabLaunch as unknown as SceneComponent,
-  // ── Part 3 · back to 2026 deliverables ──
-  calendarFlip2026back: CalendarFlip2026Back as unknown as SceneComponent,
-  deliverables2026: Deliverables2026 as unknown as SceneComponent,
-  nbiAINativeCallToAction: NBIAINativeCallToAction as unknown as SceneComponent,
-  claudeFinalSlide: ClaudeFinalSlide as unknown as SceneComponent,
-};
+import { SCENE_COMPONENTS, type SceneComponent } from "@/lib/sceneRegistry";
 
 export function Stage() {
   const [sceneIdx, setSceneIdx] = useState(0);
