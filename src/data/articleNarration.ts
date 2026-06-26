@@ -143,12 +143,18 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
   },
   {
     scene: "statsFeint",
-    heading: "Test-driven physics",
+    heading: "Not just particle physics",
     say: [
-      "Specifically on agentic particle physics, this is a little snapshot of where things were — there were a couple of very early adopters.",
-      "Test-driven development is good physics practice now. I write software tests, but I also write physics tests: I have a physical intuition for what some analytical solution should give, so I hard-code those analytical solutions as unit tests. Another example, from last week — I took my thesis from a long time ago and ran it through Claude. I was terrified it would find errors, and it did, which is fine. But I'd spent years on those analytical solutions, and it solved them over a weekend, which is depressing. Then it could use them as test-driven development: for a composite-Higgs model, if it builds new models, they should reduce back to those analytical solutions. Write the test first, make sure it fails, do the research, make sure it passes — that little loop is super powerful.",
-      "Can the whole loop be automated? I don't think so — not yet. I don't write code anymore, but explaining what the test should do — the edge cases, the corner cases of a physics scenario — is still a useful human input. Maybe for another few months.",
-      "And it's not just particle physics — it's every physics domain, every science domain. This snapshot is incomplete; I didn't thoroughly search the last two months of the other fields. But if you need convincing, I point to this Matthew Schwartz paper, which he co-wrote with Claude. This is a serious guy — a textbook-writing theoretical physicist. Whenever I'm debating theorists who push back — sure, you can do it for experiment or phenomenology, but theory is serious — I point to a serious theorist who wanted to make Claude his co-author.",
+      "Specifically on agentic particle physics, this is a little snapshot of where things were — there were a couple of very early adopters. And it's not just particle physics — it's every physics domain, every science domain. This snapshot is incomplete; I didn't thoroughly search the last two months of the other fields. But if you need convincing, I point to this Matthew Schwartz paper, which he co-wrote with Claude. This is a serious guy — a textbook-writing theoretical physicist. Whenever I'm debating theorists who push back — sure, you can do it for experiment or phenomenology, but theory is serious — I point to a serious theorist who wanted to make Claude his co-author.",
+    ],
+  },
+  {
+    scene: "statsFeint",
+    heading: "From the floor · do you write tests?",
+    say: [
+      "A question from the audience pulled me off-script for a few minutes here, about whether I use test-driven development. I do — and I think it's good physics practice now. I write software tests, but also physics tests: I have a physical intuition for what some analytical solution should give, so I hard-code those as unit tests. Last week I took my old thesis and ran it through Claude — terrified it would find errors, and it did, which is fine. I'd spent years on those analytical solutions; it solved them over a weekend, which is depressing. But then it used them as test-driven development: for a composite-Higgs model, any new model it builds should reduce back to those solutions. Write the test first, make sure it fails, do the research, make sure it passes — that little loop is super powerful.",
+      "Asked whether that can be fully automated, I said: not the whole loop, not yet. I don't write code anymore, but explaining what the test should do — the edge cases, the corner cases of a physics scenario — is still a useful human input. Maybe for another few months; Fable will probably beat it, but we don't have it yet.",
+      "And on how I'd recorded the Easter project: I spoke as I ran — a 20-minute dictation outlining the corner cases and how you'd test whether a result is sensible. I'd be lying if I said I didn't interact a bit more — three or four times, every time I went to the bathroom — but it wasn't much, and I didn't alter the original plan. That was set in stone.",
     ],
   },
 
