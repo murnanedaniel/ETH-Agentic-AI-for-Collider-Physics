@@ -32,7 +32,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-black text-zinc-100 overflow-hidden">
+      {/* No body-level overflow-hidden: the deck (Stage) and /embed clip
+          themselves (w-screen h-screen overflow-hidden), while /article needs
+          the document to scroll. */}
+      <body className="min-h-full flex flex-col bg-black text-zinc-100">
         {children}
       </body>
     </html>

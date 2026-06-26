@@ -39,6 +39,19 @@ export default function EmbedPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [advance, rewind]);
 
+  // When embedded in the article, the scene fills the iframe and never scrolls
+  // internally — so forward wheel scrolling up to the parent document, otherwise
+  // the iframe traps the scroll and the article feels stuck. Clicks/keys still
+  // interact with the scene. (Same-origin only; cross-origin access is caught.)
+  useEffect(() => {
+    if (typeof window === "undefined" || window.parent === window) return;
+    const onWheel = (e: WheelEvent) => {
+      try { window.parent.scrollBy(0, e.deltaY); } catch { /* cross-origin */ }
+    };
+    window.addEventListener("wheel", onWheel, { passive: true });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, []);
+
   if (!ready) return <div className="w-screen h-screen" style={{ backgroundColor: "#050607" }} />;
   if (!Comp || !scene) {
     return (
