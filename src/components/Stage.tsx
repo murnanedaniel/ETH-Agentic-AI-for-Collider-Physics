@@ -88,7 +88,8 @@ const SCENE_COMPONENTS: Partial<Record<SceneId, SceneComponent>> = {
 export function Stage() {
   const [sceneIdx, setSceneIdx] = useState(0);
   const [stepIdx, setStepIdx] = useState(0);
-  const [clockVisible, setClockVisible] = useState(true);
+  // Presenter clock + reset button hidden by default (press P to reveal).
+  const [clockVisible, setClockVisible] = useState(false);
   const [fallback, setFallback] = useState(false);
   const [running, setRunning] = useState(false);
   const [keyDebug, setKeyDebug] = useState(false);
