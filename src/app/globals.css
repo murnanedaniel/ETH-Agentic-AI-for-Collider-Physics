@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f6f1e7;
+  --ink: #141414;
+  --canvas: #050607;
+  --grid: rgba(125, 211, 252, 0.06);
+  --accent: #7dd3fc;
+  --accent-warm: #f59e0b;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-canvas: var(--canvas);
+  --color-accent: var(--accent);
+  --color-accent-warm: var(--accent-warm);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--canvas);
+  color: #f4f4f5;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  overscroll-behavior: none;
+}
+
+.canvas-grid {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.paper-texture {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.015) 1px, transparent 1px);
+  background-position: 0 0, 12px 12px;
+  background-size: 24px 24px;
+}
+
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
+}
+
+.theme-light {
+  --canvas: #f6f1e7;
+  --grid: rgba(20, 20, 20, 0.055);
+  --accent: #0369a1;
+  --accent-warm: #b45309;
+  color: #141414;
+}
+
+.theme-light .paper-grid {
+  background-image:
+    linear-gradient(to right, rgba(20,20,20,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20,20,20,0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.theme-light .vignette::after {
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(120,100,60,0.14) 100%);
+}
+
+.ink-shadow {
+  box-shadow: 0 14px 40px -14px rgba(20,20,20,0.25), 0 0 0 1px rgba(20,20,20,0.08);
+}
+
+/* Hide scrollbars on auto-scrolled regions (terminal feed, etc). */
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
