@@ -185,9 +185,10 @@ export function Article() {
           <p>
             Narration transcribed from the CERN recording (25 June 2026) and lightly
             cleaned. The 2031 beats embed the live Collider 2031 platform — click one to
-            explore. The teaching slide (flipped past on the day) and the ScienceDash /
-            ChATLAS deliverables (raised in the Q&amp;A) are restored here so every beat is
-            present. Only the Claude final slide, never shown, is omitted.
+            explore. Every beat of the talk and the opening Q&amp;A is present; transcription
+            was stopped just into the Q&amp;A at the speaker's request, so later questions
+            aren't included. The Claude final slide, never shown on the day, is the only
+            scene omitted.
           </p>
           <p className="mt-3">
             <a href={`${BASE}/`} className="underline underline-offset-2 hover:text-ink">↩ back to the live talk</a>

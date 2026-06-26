@@ -301,7 +301,7 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
     step: 2,
     heading: "Two: ScienceDash, the dashboard I actually use",
     say: [
-      "The dashboard from the 2028 thought experiment isn't speculative — it's the real seed of it, and I run it today. [As I mentioned in the discussion:] I have an open Claude setup at home — a little home box, a PC sitting in the corner on top of a paint can, running Claude all the time, managing my projects. That's also the scariest part: if someone got into that system they could destroy my life, and worse, a lot of scientific data. The same question applies to ATLAS — how much privilege do you give an agent on a multi-billion-franc system that could, in principle, find a way to delete data?",
+      "The dashboard from the 2028 thought experiment isn't speculative — it's the real seed of it, and I run it today. It lives on a little home box: a PC sitting in the corner on top of a paint can, running Claude all the time to manage my projects.",
     ],
   },
   {
@@ -311,6 +311,33 @@ export const ARTICLE_SECTIONS: ArticleSection[] = [
     say: [
       "The third is ChATLAS, an AI assistant for ATLAS. [This came up in the Q&A.] We've found that even good old fine-tuning of embeddings improves our ability to find relevant information that's hidden behind ATLAS's login wall — information that, in principle, shouldn't be in the training data of a GPT or a Claude. Fine-tuning takes us from about 30% retrieval accuracy to 70%. It's deep in the weeds, but it points to a space where we can still use our closed data to do things that are good for us as a community.",
       "And maybe I'm going to leave it there. Maybe in the discussion later I can show one of the others — but I'll leave it there. Thank you.",
+    ],
+  },
+
+  // ── Q&A (transcription was stopped, at the speaker's request, shortly after
+  //    the closer — so this captures the first exchanges only) ──────────────
+  {
+    scene: "easter5Dispatch",
+    heading: "Q&A · adversarial agents",
+    say: [
+      "[From the floor:] When computers first came along they were a great tool for science, but we also got computer viruses. Here, an adversarial agent can be devastating — a disgruntled employee could use agents to delete things or mess with your experiments. How do you see that?",
+      "That keeps me up at night, for sure. As I said, I run an open Claude setup on a little home box at home, running all the time — and if someone got into that, they could basically destroy my life, and worse, a lot of scientific data. We're having exactly this discussion in ATLAS: how much privilege do you give an agent on a multi-billion-franc system that could, in principle, find a way to delete data? It shouldn't happen, but these systems can exploit incredible little loopholes. I don't have a good answer for it.",
+    ],
+  },
+  {
+    scene: "nbiAINativeCallToAction",
+    heading: "Q&A · academia and the frontier labs",
+    say: [
+      "[From the floor:] How do you see the future of academia being exploited or replaced by AI labs? The frontier labs are automating industry — building RL environments, gathering datasets from Slack, from Claude Code. How might that play out in academia, and how might we build an open-source 'Hugging Face for research': sharing failed experiments, negative results, rethinking H-indexes, citations, PDFs and journals?",
+      "I think there's still a little space we can carve out as physicists. Take ChATLAS: even good old fine-tuning of embeddings improves our ability to find information hidden behind ATLAS's login wall — data that shouldn't be in a GPT's or Claude's training set — taking retrieval from about 30% to 70%. That's deep in the weeds, but it points to a space where we can use our closed data for the good of the community. It won't solve the whole thing, though: at some point the floodgates open and all the data should be public. Then we have to totally rethink things — what does ATLAS look like if 80% of the people stop working there because there's nothing to do? The whole funding structure falls apart. How that integrates with the frontier labs — how much we work with them or against them — isn't clear to me. Sorry, another non-answer.",
+    ],
+  },
+  {
+    scene: "easter9Thesis",
+    heading: "Q&A · is it good enough — and prompt engineering?",
+    say: [
+      "[Remote question:] If we give an agent a project and it produces a paper, do you think the agent's reasoning about its own results is satisfactory for a review committee? And when you submit a project to an agent, do you prompt in a special way — should physicists be learning prompt engineering, alongside physics, to get good results?",
+      "[The recording was stopped here, at my request, just into the Q&A — so my answer to this one, and the questions after it, aren't in the transcript.]",
     ],
   },
 ];
