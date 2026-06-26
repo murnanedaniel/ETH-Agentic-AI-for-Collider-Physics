@@ -1,199 +1,287 @@
 import type { SceneId } from "@/lib/timeline";
 
-// The reading version of the talk: an ordered list of sections, each pairing a
-// live (embedded, interactive) scene with the spoken narration for that beat.
+// The reading version of the talk: an ordered list of beats, each pairing a
+// live embed with the narration for that beat.
 //
-// NARRATION SOURCE: interim text below is condensed from the prepared script
-// (faculty_retreat/script/script.md). It will be REPLACED by the real delivered
-// transcript (ASR of the CERN recording) aligned to these scenes. New ETH-only
-// beats (2031 excursion, 2026 deliverables) are marked and will be filled from
-// the transcript, where they were actually spoken.
+// NARRATION = the delivered talk, transcribed from the CERN recording (ASR,
+// 0:00–46:08, up to "…I'll leave it there. Yeah. Thank you.") and lightly
+// cleaned: filler and false-starts trimmed, ASR mishearings of technical terms
+// fixed (Perlmutter, Geant, MadGraph, Pythia, HiLumi, milli-charged, MACE,
+// AutoAna, ChATLAS, diHiggs, ACTS…). Daniel's phrasing is otherwise kept.
+//
+// Embeds: deck scenes via /embed (scene), or the live Collider 2031 platform
+// routes via url (the 2031 walkthrough was narrated over that site). Beats he
+// skipped live (teaching, the Claude final slide) are omitted.
+
+const C2031 = "https://www.danielmurnane.com/Collider-2031";
 
 export type ArticleSection = {
-  scene: SceneId;
-  step?: number;        // default embed step (a representative "full" frame)
+  scene?: SceneId;       // deck scene embed (/embed)
+  url?: string;          // external embed (Collider 2031 route)
+  embedLabel?: string;   // caption for url embeds
   heading?: string;
-  // paragraphs of spoken narration
   say: string[];
-  // set when the prose is interim (script-derived or placeholder), not yet
-  // replaced by the aligned recording transcript.
-  interim?: boolean;
 };
 
 export const ARTICLE_SECTIONS: ArticleSection[] = [
+  // ── Part 1 · today ────────────────────────────────────────────────────
+  {
+    scene: "title",
+    heading: "Getting everyone on the same page",
+    say: [
+      "Thanks a lot for coming. Wow, it's super hot today — I just flew in from Copenhagen, which is not this bad. Down the bottom-left of my talk there's a temperature gauge; it's a bit hard to see, but it's 33.8°C, which is 5% the temperature of the surface of the Sun. I'm tracking that live through a little API. In Kelvin, of course — it'd be cheating if it were in Celsius.",
+      "I'm not sure exactly who here is in particle physics and who isn't, so I want to get everyone on the same page. I'll leave the hands-on examples to the next couple of talks and just try to stimulate some ideas. My background is in collider physics — I'm a member of the ATLAS collaboration, one of its two machine-learning conveners, and this is the kind of thing we work with.",
+    ],
+  },
   {
     scene: "rateRamp",
-    step: 5,
-    heading: "Forty million collisions a second",
-    interim: true,
+    heading: "Forty megahertz",
     say: [
-      "Thank you for the invitation to talk about my favourite topic: replacing all physicists with artificial intelligence. I'm a postdoc in subatomic physics, working with the ATLAS detector at the LHC, where we're preparing for the upgrade using machine learning to overcome the firehose of data.",
-      "Two bunches of protons collide and produce a spray of particles — not once per second, not 10 Hz, but at 40 MHz, once every 25 nanoseconds. These 15,000 beams flashing at 60 Hz are about 1 MHz; if we plastered the whole room with this slide, we'd get close to 40 MHz.",
+      "We work with the LHC, where collisions happen a lot — we don't have the luxury of taking our time. Not five per second, not ten per second… this is an attempt to visualise one megahertz. We actually gather collisions at 40 megahertz at the Hadron Collider, and at that point it just wasn't possible to render the rate on screen. But if you plastered this whole hall with screens like this, you'd start to see it. It's a lot. And you have to make sense of that data — some of it in real time.",
     ],
   },
   {
     scene: "gnnSolution",
-    step: 3,
     heading: "Connecting the dots",
-    interim: true,
     say: [
-      "The problem isn't just the rate, it's the complexity. One collision in the tracker has ~350k energy deposits tracing ~10k interesting particles, and we're only allowed to miss a few percent. A group I lead with Berkeley, L2IT, Heidelberg and Wisconsin solves this with graph neural networks: build a graph, then pass messages to evolve a solution to the combinatorial problem.",
-      "When we started in 2021 it took about a minute per event. Today it's ~100 ms, with a clear path to 10 ms. With 1000 GPUs we expect to hit the 100 kHz needed for the ATLAS software trigger by 2031.",
+      "One of the problems I work on more and more these days is tracking. Every collision, we have something like a few thousand particles to reconstruct, and each leaves of order ten hits — plus all the pile-up, so around 300,000 hits in the ATLAS upgrade detector.",
+      "One way to solve this is with graph neural networks: we connect all the hits into a candidate graph, then evolve through that graph with a GNN to figure out which edges between hits are true and which are fake. In doing so we reconstruct those order-thousand particles.",
+    ],
+  },
+  {
+    scene: "speedJourney",
+    heading: "From a minute to ten milliseconds",
+    say: [
+      "Of course, we don't have a long time to do it. When we started this project a few years ago, it took about a minute per reconstruction. Today it's around 100 milliseconds, and we're pretty sure there's a clear path to about 10 milliseconds. At 10 milliseconds, a thousand-or-so GPUs put you in the ballpark of the megahertz we need for the ATLAS software trigger.",
     ],
   },
   {
     scene: "loopsViz",
     heading: "The inner loop",
-    interim: true,
     say: [
-      "Solving these problems with ML is the inner loop of research — replacing a hand-tuned algorithm with a flexible model that adapts to any detector or physics goal. The same model finds standard-model particles or strange BSM trajectories like quirks.",
-      "The inner loop is old: Bruce Denby proposed neural networks for HEP reconstruction in 1988, and by 1991 ALEPH at LEP was running Hopfield nets on real TPC data. But this talk isn't about the inner loop — let's consider a middle loop: project-level.",
+      "This is really cool — a cutting-edge machine-learning idea — but it's at the level of a task. We're completing a particular task. If you're using words like reconstruct, trigger, reject, we're talking about the inner loop of AI, or what people probably prefer to call ML.",
+    ],
+  },
+  {
+    scene: "quirksAside",
+    heading: "Same technique, zany tracks",
+    say: [
+      "It's a nice way to do physics, because we don't need to re-engineer the whole thing from scratch every time we want to find something new. For example, we just put out a paper showing you can reconstruct some really zany tracks with the exact same technique. These are quirks — a type of particle that shows up in a lot of BSM models. They come in pairs, confined at the scale of millimetres or even metres, so they zip away from each other and come back. Current tracking algorithms simply can't find them. For a GNN it's trivial — you just change the loss function.",
+    ],
+  },
+  {
+    scene: "innerLoopHistory",
+    heading: "None of this is new",
+    say: [
+      "And it's completely not new. Around 1988 this was shown to work for high-energy physics; by 1991 it was more or less deployed at LEP. That's a while ago, and it keeps getting better. But that's not really what today is about. Today is about going beyond the inner loop.",
+    ],
+  },
+  {
+    scene: "loopsVizMiddle",
+    heading: "The middle loop",
+    say: [
+      "So I'll stop talking about ML applications for particular tasks, and zoom out to the middle loop. This is a pretty mature place now: using AI to do whole projects, or parts of projects — writing the code, organising the work, analysing things end to end.",
+    ],
+  },
+  {
+    scene: "easter1Release",
+    heading: "ColliderML, fully open",
+    say: [
+      "Let me give an example from about a month ago. We just put out a dataset called ColliderML — around 30 terabytes of full simulation across a bunch of physics channels, all natively open. That's great, but it also means that if there are little quirks in the data, people will find them. You can't hide anything.",
     ],
   },
   {
     scene: "easter2Bug",
-    heading: "An Easter anecdote",
-    interim: true,
+    heading: "The email I kept getting",
     say: [
-      "I'm part of ColliderML, which released the largest fully-open detector simulation of LHC-like data. Over Easter I got the third email in a month about a weird thing: people fitting track shapes found our baseline much worse than a simple ML algorithm.",
-      "We knew why. Our baseline works wherever the collision happens — at the origin or drifted hundreds of microns. But all our data was centred at the origin, so people's ML was learning that bias. It's a known LHC tracking issue that creates tension between ML and traditional people, and keeps getting ignored.",
+      "One email I got more than once was: hey, we've been training on your dataset, and it's really easy to predict one of the features. One of these is D0, part of the track parameterisation. People could trivially predict it — in fact all they had to do was predict that every track came from (0,0,0), and they'd beat our classical reconstruction algorithm.",
+      "I got sick of hearing this, because it's a good question but also provocative when you've spent a long time building a good reconstruction algorithm.",
+    ],
+  },
+  {
+    scene: "easter3SmokingGun",
+    heading: "The beam spot drifts",
+    say: [
+      "The heart of the problem: if you assume every collision happens right at the centre of the detector, then yes, most tracks come from near (0,0,0). But in reality the beam spot drifts over time — by up to hundreds of microns — and our simulation wasn't authentically showing that drift. So a trivial ML model predicting (0,0,0) could beat our classical algorithm, which actually generalises to any beam spot. There was real tension there. So I thought: let me just solve this.",
     ],
   },
   {
     scene: "rorvigRunPhone",
-    heading: "A plan, recorded on a run",
-    interim: true,
+    heading: "A project, dictated on a run",
     say: [
-      "So I went for a run near a summerhouse at Rørvig, and recorded a plan: simulate new datasets that move the beamline, run different baselines, train ML on one simulation and test generalisation to others, and build a new architecture — global fitting — that fits all tracks at once and learns in-situ where the beamspot actually is. I sent the audio transcript to Claude Code and told it to complete the project.",
+      "Over Easter I went for a run — we were staying in a summerhouse in northern Denmark. Not a great pace, just over five minutes a kilometre, but during the run I managed to dictate a very short project: what if you didn't move the beam line — could ML still do equally well? I recorded the project during the run and transcribed it.",
     ],
   },
   {
     scene: "easter5Dispatch",
-    step: 1,
-    heading: "Two minutes of typing, then Perlmutter woke up",
-    interim: true,
+    heading: "Then Perlmutter woke up",
     say: [
-      "To be specific: I ran Claude Code on Berkeley's Perlmutter cluster, with access to hundreds of CPU and GPU nodes and permission to request what it needed. Between diaper changes and beach trips I checked in via Remote Control on my phone, nudging it occasionally.",
-      "The resource usage: ~1000 CPU-hours of completely new simulation of a drifting beamline that exists nowhere publicly, and ~400 GPU-hours of training, inference, and building a new architecture. It didn't copy, plagiarise, or hallucinate — there is no published ML track-fitting study with a drifting beamspot. It did serious work, faster and more meticulously than I would. Here's the project, sped up 100×.",
+      "Because I was blessed to be at a small summerhouse with my wife and child, I sent the project off to Claude — running on Perlmutter, one of the larger Department of Energy systems. I uploaded the project and basically said: don't interrupt me for a few days. The blue is me defining the project (the animation isn't great over Zoom, but you get the gist). Then Claude started to work. I gave it a budget of around a thousand GPU-hours, and tracked the CPU- and GPU-hours as it went. It worked for about three days.",
     ],
   },
   {
     scene: "easter8Reveal",
-    step: 2,
-    heading: "A paper by Monday morning",
-    interim: true,
+    heading: "It gave me back a paper",
     say: [
-      "By Monday, Claude had written a 10-page paper proposing a solution to robust track fitting in LHC-like environments. Not perfect — I proof-read it and asked for some overconfident claims to be removed. Then I shared it with the ColliderML group, including some of ATLAS and FCC's most experienced tracking experts. The feedback: fix a caption, tweak the conclusion. I didn't read a line of code or a single decimal of data.",
+      "Then it gave me back a paper draft, which was pretty decent. There were some issues with captioning, and some of the conclusions were a little ambitious — Claude is very good at saying \"wow, you've solved all the physics\" when in fact you've made a small dent on one particular problem. Once I'd talked it down from those delusions of grandeur, I shared it with the rest of the ColliderML group. It basically answered the question of which ways you'd use ML here — dispatching various model-training tasks — and came out as a decent first draft.",
     ],
   },
   {
     scene: "easter9Thesis",
     heading: "What the middle loop looks like",
-    interim: true,
     say: [
-      "This is the middle loop: a clearly-defined project a PhD student or strong masters student could do alone with weekly check-ins. You've tasted it — code autocomplete, ChatGPT polishing a proposal, AI literature review. The difference between autocomplete and Claude writing a whole codebase and iterating is just trust, reliability, and resources.",
-      "The capability already exists. Since Claude Opus 4.5 last December, it lets scientists broadly automate the work of an early PhD student — and within a couple of years, an early postdoc. I say that as a postdoc, and not because I'm betting on better models: even if they don't improve, we'll learn to use them far better.",
+      "I think that's a good way to understand the middle loop, circa May–June 2026: a project that might take a few days — especially anything to do with machine learning, which Claude is extremely good at — and that comes out as not a Nature-worthy paper, but certainly an arXiv-worthy one. If you're using words like code, or ChatGPT, you've seen this workflow before.",
     ],
   },
   {
     scene: "easter10WhyPossible",
-    heading: "Why this was possible",
-    interim: true,
+    heading: "Why this one worked",
     say: [
-      "I have no secret skills or private models. I spent the last year streamlining the systems: simulating realistic data, fast access to compute, reliable and transparent ML pipelines. With those in place, Claude had the tools and permission to work. If your science involves computation, data, simulation, literature, long analytical arguments — you can probably already publish decent work in a fairly automated way. The only missing piece is research taste, which you already have.",
+      "Why did this project work? Having an already well-established codebase, metrics I already trusted from classical algorithms — a trustworthy foundation — makes a Claude-based project much more reliable. And running it all on the cluster: I gave Claude direct access to my full Perlmutter allocations. It's really good at knowing how to use them — it knows how Slurm works, it can sleep and wait for days until a job finishes and then pick it back up. There's almost no excuse not to do this kind of thing. You already have the research taste yourself; a lot of the boring stuff can be automated.",
     ],
   },
   {
     scene: "statsFeint",
-    step: 3,
     heading: "Not just particle physics",
-    interim: true,
     say: [
-      "In the last six months there have been one, then two, then five, now almost ten papers on doing particle physics analysis with agentic AI. I won't fit an exponential, but you get the gist. An analysis is a perfect fit: much of it is following recipes and patterns and surveying existing work. It's not plug-and-play — a PhD student is lucky to finish one before their defence — but these systems reproduce them in days with a little hand-holding.",
-      "Biology is the same. Chemistry, condensed matter, astrophysics, climate, theory — the same. Here's a paper co-published by Matthew Schwartz and Claude. By the end of this year, a non-negligible fraction of physics papers will include AI-produced content.",
+      "And it's not just particle physics — it's every physics domain, every science domain. This snapshot is incomplete; I didn't thoroughly search the last two months of the other fields. But if you need convincing, I point to this Matthew Schwartz paper, which he co-wrote with Claude. This is a serious guy — a textbook-writing, serious theoretical physicist. Whenever I'm debating theorists who push back — sure, you can do it for experiment or phenomenology, but theory is serious — I point to a serious theorist who wanted to make Claude his co-author.",
+    ],
+  },
+
+  // ── Part 2 · 2028 ─────────────────────────────────────────────────────
+  {
+    scene: "calendarFlip2028",
+    heading: "Skip forward to 2028",
+    say: [
+      "But okay — that's today. What if we skip forward a couple of years, to 2028? Where does this go?",
     ],
   },
   {
     scene: "platform2028",
-    step: 0,
-    heading: "A thought experiment: 2028",
-    interim: true,
+    heading: "Everything, formalised",
     say: [
-      "So let's run some thought experiments. What does your day look like in 2028? You get in, the coffee machine's broken, and you check your dashboard. This is the shape of it: every project has documentation, hypotheses, budget, a codebase, ML logging — and a brain, a live Claude Code thread with a heartbeat that checks in a few times a day with the project, the experiments, you, and the workhorses.",
-      "The workhorses are Claude Code sessions on big clusters, with a strict budget and a mandate to prove or disprove hypotheses, write and test code, review literature, and respond to each other. Ideally you rarely touch them directly — you read the feed and nudge the brain. You'd be surprised how much meaningful work autonomous agents produce with maybe once-an-hour human input. I think that moves to once-a-day before we know it.",
+      "By 2028, all these ad-hoc little things I'm doing in Claude — that everyone is doing — should be formalised. I imagine scientific dashboards where all your projects are well-defined and tracked, with a full suite of agents working on them. You can see how many CPU- and GPU-hours each has, its resource budget, which papers it's contributing to — and people: how are your collaborators interacting with your agents? Can you look at your students' agents, and how their agents interact with yours? What does the ecosystem look like?",
+      "That's where these messy experiments start to look more formal — and where we're really in the outer loop: programmes, careers, how you come up with ideas, how you collaborate, teach and publish.",
     ],
   },
   {
     scene: "nbiGraph",
-    step: 2,
-    heading: "What collaboration looks like",
-    interim: true,
+    heading: "What collaboration could look like",
     say: [
-      "We can taste this today. Here's a graph of all NBI faculty, positioned by scientific profile — quantum physicists cluster together, near subatomic, far from climate. But the bridges are the interesting part: I scraped everyone's recent five papers and embedded them, and these bridges show similarities your profiles wouldn't suggest.",
+      "Take collaboration. I'm at NBI, the Niels Bohr Institute in Copenhagen, and my impression is that people there don't talk to each other very much — they're very siloed. There are about 100 permanent staff, so I scraped them all and built a network. The grey connections are the people you'd expect to know each other — similar abstracts, both particle physicists, both chemists. The yellow connections are people who look similar and have recently published on a coincidentally similar topic, but probably don't know each other.",
     ],
   },
   {
     scene: "matchmaking",
-    step: 1,
     heading: "A collaboration lottery",
-    interim: true,
     say: [
-      "So let's play a collaboration lottery. Pick two groups at random — Climate and Condensed Matter — then two researchers sharing a close bridge: Per Hedegård and Eliza Cook. Per does minimal-model magnetism, DFT and Hubbard models. Eliza dates ice cores by the volcanic tephra trapped inside. Different ends of the building — but both care about the iron-redox state of those shards: Eliza because it controls stratospheric sulphate, Per because his spin-Hamiltonian toolkit can invert magnetic susceptibility to Fe³⁺/Fe²⁺ ratios without destroying the shard. Claude drafts an interdisciplinary grant abstract, and maybe we have a new project.",
-    ],
-  },
-  {
-    scene: "faculty2031Teaching",
-    step: 3,
-    heading: "What teaching looks like",
-    interim: true,
-    say: [
-      "What does teaching look like when every undergraduate has a world-class expert in their pocket? Students will still want in-person education — to network, to make friends, for a human touch. But presenting new material in a traditional lecture won't make sense when an agent can deliver something more personalised at home.",
-      "So: reverse lectures. Students study alone or in groups, build intuition with the agent, and the in-person session becomes student-to-student teaching, deep discussion, project work. Harvard, Stanford and Carnegie Mellon are already testing this, with students progressing about twice as fast.",
+      "So I ran a lottery: randomly pick two people with a strong bridging connection, from two different sections of NBI, and have Claude cook up a grant proposal. It did pretty well. I emailed it to them beforehand — I was worried they'd be offended — and they said it basically looked reasonable. One group is condensed matter, the other paleoclimatology; these are not people bumping into each other over coffee. It seems obvious to me this kind of tool should be built into institutes.",
     ],
   },
   {
     scene: "phdPedagogy",
-    step: 3,
-    heading: "And PhDs? This keeps me up at night",
-    interim: true,
+    heading: "And what is a PhD, now?",
     say: [
-      "As for PhD students, I'm at a loss — this keeps me up at night. What does project-based pedagogy look like when a human takes twice, five times, a hundred times as long as an agent? Should a PhD be mostly training in managing AI for science? I hope the bar rises instead: that we get more ambitious, propose entirely new kinds of projects to explore new phenomena that used to need many people and a huge budget, but now a supervisor and a student can do.",
+      "Teaching I'll skip — I'm taking longer than I thought. But there's an open question: what does a PhD even look like when an agent can do twice, five times, a hundred times the work of a PhD student, and faster? I hope it means a student uses many agents and gets a lot more done — that we raise the ambition for what a PhD is. It shouldn't just be one or two analyses; it should be something more grand.",
+    ],
+  },
+
+  // ── Part 3 · the 2031 thought experiment (live Collider 2031) ─────────
+  {
+    scene: "calendarFlip2031",
+    heading: "Jump way ahead: 2031",
+    say: [
+      "Okay — that was 2028. Let me jump way ahead, to 2031, when the HL-LHC will have been running for a little while, and run a thought experiment for what life looks like for a particle physicist then. This is a role-play, and it's available online — you can go to GitHub, pull the platform, and make your own version of this future.",
     ],
   },
   {
-    scene: "colliderLabLaunch",
-    step: 1,
-    heading: "A thought experiment, made walkable: 2031",
-    interim: true,
+    url: `${C2031}/dashboard`,
+    embedLabel: "Collider 2031 · Maja's dashboard",
+    heading: "Meet Maja",
     say: [
-      "[2031 excursion — spoken narration to be filled from the recording transcript. At this point in the talk I left the slides entirely and opened Collider 2031, a design-fiction platform, walking through the people, the discovery, and how physics gets done five years out.]",
+      "Let's follow a student, Maja, working on a platform called ColliderLab. She's a climate-science PhD student at Zürich, and a member of the HiLumi Metacollaboration. Metacollaborations are cross-detector communities that police their own standards. They had to be created because in 2027 the Swiss parliament passed legislation requiring that every publicly-funded project putting data on a software system make it open instantly — so the regular collaborations like ATLAS and CMS, built on keeping data internal, fell apart, and these open-source meta-collaborations sprang up.",
+      "Maja is still a climate scientist, but does a bit of particle physics on the side. She stores about 3 terabytes of data on her local machine, which earns her credits, and she leaves it on at night so analyses can run. What does anyone spend their credits on? GPU-hours. So let's spend some.",
+    ],
+  },
+  {
+    url: `${C2031}/foundation`,
+    embedLabel: "Collider 2031 · Foundation Space",
+    heading: "Foundation Space, and an anomaly",
+    say: [
+      "Maja is working on an idea in Foundation Space — a 100,000-dimensional latent space that captures the processes of the Standard Model: an embedding of the reconstruction and analysis models across the different collaborations. Because all data is collected in real time, events get embedded into this space as they arrive. Some ATLAS and CMS events land outside the Standard-Model surface — usually just detector miscalibrations that a calibration agent picks up.",
+      "How do you interpolate a surface in 100,000 dimensions? You need a differentiable simulation — and all simulation has been differentiable for a couple of years, since Geant 5. Over the last few days, Maja noticed a weird little anomaly that appears on the surface, leaves it, and comes back. The agents haven't been able to figure out what it is, and it's not a detector miscalibration.",
+    ],
+  },
+  {
+    url: `${C2031}/simulation`,
+    embedLabel: "Collider 2031 · Simulation builder",
+    heading: "She builds a simulation",
+    say: [
+      "These unsolved anomalies are handed out as bounties. Looking at the bounty, there's an ATLAS event and a CMS event at about the same time; because we can attach anomaly scores all the way down to individual hits, we can see both have an anomalous part, happening simultaneously across both detectors over a few minutes.",
+      "Maja has a theory, but to test it she has to simulate it. By 2031 all simulations are trivial — nobody looks at CMSSW or Athena anymore; you describe the simulation in natural language. Being a climate and planetary scientist, she wants to simulate a solar flare with a program she knows, Solaris, at its M-class settings. That hasn't been simulated before, so the agent finds the program and inserts it into the ATLAS and CMS geometries. A few hundred million events should do it.",
+    ],
+  },
+  {
+    url: `${C2031}/calibration`,
+    embedLabel: "Collider 2031 · Calibration",
+    heading: "Simulation, in minutes",
+    say: [
+      "How is this so fast — hundreds of millions of full-quality simulations in a few minutes? Ever since Simulation, Reconstruction and Analysis as a Service came online, you just submit tasks to centralised clusters. And since everything was ported to GPU — Geant 5, MadGraph, Pythia — there's an orders-of-magnitude speed-up.",
+      "We get back 100 million events, and they don't quite match — which is fine, we haven't built or calibrated this simulation before. So we calibrate it to Foundation Space. Ever since adversarial unfolding was invented in 2027, we can just run the calibration.",
+    ],
+  },
+  {
+    url: `${C2031}/solar`,
+    embedLabel: "Collider 2031 · Solar confirmation",
+    heading: "It's the Sun",
+    say: [
+      "And once it's properly calibrated, the simulation matches the anomaly she saw almost perfectly. She's solved the bounty — it was a solar flare. She messages her PI: I think I've solved this. The PI says, great, present it at the next group meeting.",
+      "She commits her new simulation to Foundation Space — all new simulations go in, so they can be used for future constraints — and some agents check that the commit makes sense.",
+    ],
+  },
+  {
+    url: `${C2031}/analysis`,
+    embedLabel: "Collider 2031 · Real-time analysis",
+    heading: "Who pays for all this?",
+    say: [
+      "Now — who's paying for hundreds of thousands of GPU-hours? Ever since one of the LHC's big ML advocates took a major tech CEO out drinking and convinced him to donate idle GPU-hours to LHC projects. What sold him was the Higgs vacuum-stability measurement, which he thought was really sexy: can we measure the diHiggs coupling, the top mass and the Higgs mass precisely enough to constrain whether the Higgs vacuum is stable?",
+      "Because events come in real time, you can watch the vacuum-stability constraint tighten live. We don't release analysis papers anymore — the data is available in real time and the analyses just update on the fly. And you can spend your credits to bet on outcomes, which generates more credits for the whole ecosystem. Anyone can contribute — GPU-hours, storage, creativity — without being part of a collaboration.",
+    ],
+  },
+  {
+    url: `${C2031}/erik`,
+    embedLabel: "Collider 2031 · Erik's path",
+    heading: "The other version: Erik",
+    say: [
+      "There's another version of this story. Back in 2028, Erik starts his PhD, super excited to learn how particle physics is done — searching for BSM resonances on Run 3 data. He uses AutoAna, where analysis is partly automated by agents. He specifies the analysis, discusses it with the agentic system, tightens cuts, runs on a small unblinded subset for sanity-check histograms, takes it to his weekly supervisor meeting. There's a lot of human in the loop, and he comes away feeling like he's done some physics.",
+      "Jump to 2029. AutoAna has been deprecated — a paper running for two years proved conclusively that including humans in the loop reduced sensitivity, because it introduces bias and inefficiency. So most analyses are now forbidden from human interaction; there isn't even collaboration review, because an approval agent is more effective. Erik's job is to let the agent try thousands of configurations and tweak here and there — he looks like a manager. At his defence, the committee asks why he chose X, Y, Z, and his answer is, more or less, \"because the agent told me to.\" He passes, but leaves physics, disillusioned. And because people aren't doing analyses, ATLAS membership has plummeted — from about 5,200 in 2028 to around 1,500. The agentic analysis made precision and discovery better; it's just not compatible with how a large collaboration staffs thousands of members.",
+    ],
+  },
+  {
+    url: `${C2031}/elena`,
+    embedLabel: "Collider 2031 · Elena's path",
+    heading: "A better version: Elena",
+    say: [
+      "That was a bit of a bummer, so let me do one more — Elena, who I'll admit I haven't fully fleshed out. She starts her PhD in 2029, when agentic analysis has removed the human from the loop, so her advisor suggests she build her own experiment: a search for milli-charged particles from a dark-photon sector. She runs literature reviews with agents, tries different detector geometries — much of which can be optimised automatically, since the simulation is differentiable — and writes a TDR for a little tabletop experiment.",
+      "She starts her own small collaboration, MACE — her group plus a few others — and designs a tabletop experiment that's much cheaper thanks to 3D printing and agent-run robotics. She's tinkering now, picking up skills in materials, electronics, experiment design. Around 2030 she commissions it and traps her first ions, making a dent in the dark-photon constraint space. By 2031 she takes a year of data, unblinds it just before her defence — not quite as constrained as she'd hoped, but a real dent — and commits it to Foundation Space so phenomenologists and experimentalists can use it. That's a more encouraging world: people empowered to do smaller, cheaper experiments, compatible with large collaborations that automate the analysis and reconstruction we all know and love.",
+    ],
+  },
+
+  // ── Part 4 · back to today: real deliverables ────────────────────────
+  {
+    scene: "calendarFlip2026back",
+    heading: "Back to now — three concrete things",
+    say: [
+      "That's 2031. In a dream world I'd have more time and give you three concrete examples of what this actually looks like today — because I think we're closer than we realise. I'll steer clear of agentic analysis (Eric will show plenty of that) and give one example: ColliderML.",
     ],
   },
   {
     scene: "deliverables2026",
-    step: 3,
-    heading: "Back to now: three real things",
-    interim: true,
+    heading: "ColliderML, for real",
     say: [
-      "[2026 deliverables — narration to be filled from the recording transcript. We snap back from 2031 to today and land on three things you can open right now: ColliderML, ScienceDash, and ChATLAS.]",
-    ],
-  },
-  {
-    scene: "nbiAINativeCallToAction",
-    step: 5,
-    heading: "A call to action",
-    interim: true,
-    say: [
-      "Research institutes are wrestling with these questions, and some are coming out conservative or vague — especially in Europe. That's an opportunity. An institute can use AI to collaborate far more effectively, promote and develop AI research tools, give students very clear guidance and dedicated courses, and write down what a PhD v2 looks like — all backed by a world-class first-principles attitude. With some careful thought there's an exciting opportunity here.",
-    ],
-  },
-  {
-    scene: "claudeFinalSlide",
-    step: 1,
-    heading: "A final slide, written by Claude",
-    interim: true,
-    say: [
-      "For fun, I had Claude read this talk and propose a final slide. Here it is.",
+      "ColliderML is a fully-open simulation system on a hypothetical detector called the Open Data Detector. I wish I had more than ten seconds for this. Everything is open, so you can run it on your laptop and build workflows. You add generation stages — how do we generate? MadGraph plus Pythia. How do we simulate? Geant 4. What's the pile-up? How do we digitise? You reconstruct with ACTS, the state-of-the-art tracking ATLAS uses, or Pandora, which FCC will use. It's all built in, and you can pull that configuration and run it on your laptop.",
+      "Or you can ask a copilot — change ttbar to Z→μμ — and it looks at your workflow and suggests the updates. Earlier, when I showed the ColliderLab simulation, that was a toy; this really works. You can simulate on your laptop, or earn points by submitting good models and running them on Perlmutter for millions of events. The points all run through Hugging Face, which has been generous about hosting the data.",
+      "And maybe I'm going to leave it there. Maybe in the discussion later I can show one of the others — but I'll leave it there. Thank you.",
     ],
   },
 ];

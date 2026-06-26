@@ -12,15 +12,11 @@ function labelFor(scene: string) {
   return SCENES.find((s) => s.id === scene)?.label ?? scene;
 }
 
-// Lazy, framed, fully-interactive embed of a single scene (iframe → /embed).
-function SceneEmbed({ section }: { section: ArticleSection }) {
-  const ref = useRef<HTMLDivElement | null>(null);
+// Window the embeds: mount the iframe only while near the viewport, unload it
+// when it scrolls well away. Each iframe boots a whole app, so mounting all of
+// them at once overwhelms the renderer (jank + black areas). Caps to ~2-3 live.
+function useNearViewport(ref: React.RefObject<HTMLElement | null>) {
   const [show, setShow] = useState(false);
-
-  // Window the embeds: keep an iframe mounted only while it's near the viewport,
-  // and UNLOAD it once it scrolls well away. Each iframe boots the whole app
-  // (plus Three.js scenes), so mounting all 19 at once overwhelms the renderer
-  // (jank + black/blank areas below the fold). This caps it to ~2-3 live.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -30,28 +26,24 @@ function SceneEmbed({ section }: { section: ArticleSection }) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [ref]);
+  return show;
+}
 
-  const label = labelFor(section.scene);
-  // Always start embeds at the beginning (step 0) so the reader plays the
-  // scene's build themselves — don't jump to the final/spoiler frame.
+// A deck scene, embedded live and immediately interactive (the /embed page
+// forwards wheel to the parent so it never traps scroll).
+function SceneEmbed({ section }: { section: ArticleSection }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const show = useNearViewport(ref);
+  const label = labelFor(section.scene!);
   const src = `${BASE}/embed/?scene=${section.scene}`;
-
   return (
     <figure ref={ref} className="my-7">
       <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden ink-shadow border border-ink/12 bg-canvas">
         {show ? (
-          <iframe
-            src={src}
-            title={label}
-            loading="lazy"
-            className="absolute inset-0 w-full h-full"
-            style={{ border: "none" }}
-          />
+          <iframe src={src} title={label} loading="lazy" className="absolute inset-0 w-full h-full" style={{ border: "none" }} />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center font-mono text-[12px] text-ink/40">
-            {label} · loading…
-          </div>
+          <div className="absolute inset-0 flex items-center justify-center font-mono text-[12px] text-ink/40">{label} · loading…</div>
         )}
       </div>
       <figcaption className="mt-2 flex items-center justify-between font-mono text-[11px] text-ink/45">
@@ -60,6 +52,63 @@ function SceneEmbed({ section }: { section: ArticleSection }) {
       </figcaption>
     </figure>
   );
+}
+
+// An external app (e.g. a Collider 2031 route), embedded behind a click-to-
+// interact overlay. The overlay (part of this document) lets the wheel scroll
+// the article; clicking it activates the iframe; a release button deactivates.
+function UrlEmbed({ section }: { section: ArticleSection }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const show = useNearViewport(ref);
+  const [active, setActive] = useState(false);
+  const label = section.embedLabel ?? "Collider 2031";
+  return (
+    <figure ref={ref} className="my-7">
+      <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden ink-shadow border border-ink/12 bg-[#0a0e14]">
+        {show ? (
+          <>
+            <iframe
+              src={section.url}
+              title={label}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full"
+              style={{ border: "none", pointerEvents: active ? "auto" : "none" }}
+            />
+            {!active ? (
+              <button
+                type="button"
+                onClick={() => setActive(true)}
+                className="absolute inset-0 z-10 flex items-end justify-center bg-transparent hover:bg-black/10 transition group"
+                aria-label={`Interact with ${label}`}
+              >
+                <span className="mb-4 rounded-full bg-black/70 text-white/90 px-4 py-1.5 font-mono text-[11px] opacity-80 group-hover:opacity-100">
+                  click to explore ↗
+                </span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setActive(false)}
+                className="absolute top-2 right-2 z-10 rounded-full bg-black/70 text-white/90 px-3 py-1 font-mono text-[10px] hover:bg-black/90"
+              >
+                ✕ release
+              </button>
+            )}
+          </>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center font-mono text-[12px] text-white/40">{label} · loading…</div>
+        )}
+      </div>
+      <figcaption className="mt-2 flex items-center justify-between font-mono text-[11px] text-ink/45">
+        <span>{label}</span>
+        <span>↗ live · Collider 2031</span>
+      </figcaption>
+    </figure>
+  );
+}
+
+function Embed({ section }: { section: ArticleSection }) {
+  return section.url ? <UrlEmbed section={section} /> : <SceneEmbed section={section} />;
 }
 
 export function Article() {
@@ -112,7 +161,7 @@ export function Article() {
 
         {/* sections */}
         {ARTICLE_SECTIONS.map((section, i) => (
-          <section key={`${section.scene}-${i}`} className="mb-12">
+          <section key={`${section.scene ?? section.url}-${i}`} className="mb-12">
             {section.heading && (
               <h2 className="font-serif italic text-ink text-[clamp(22px,2.8vw,34px)] leading-tight mb-4">
                 {section.heading}
@@ -128,18 +177,21 @@ export function Article() {
                 {p}
               </p>
             ))}
-            <SceneEmbed section={section} />
+            <Embed section={section} />
           </section>
         ))}
 
         <footer className="mt-16 pt-8 border-t border-ink/10 font-mono text-[12px] text-ink/45 leading-relaxed">
           <p>
-            Narration is being replaced with the delivered transcript (ASR of the
-            CERN recording), aligned scene-by-scene. The 2031 excursion and the 2026
-            deliverables are filled from what was actually said.
+            Narration transcribed from the CERN recording (25 June 2026, 0:00–46:08)
+            and lightly cleaned. The 2031 beats embed the live Collider 2031 platform;
+            click one to explore. Teaching and the Claude final slide were skipped on
+            the day and are omitted here.
           </p>
           <p className="mt-3">
             <a href={`${BASE}/`} className="underline underline-offset-2 hover:text-ink">↩ back to the live talk</a>
+            {"  ·  "}
+            <a href="https://indico.cern.ch/event/1692774/contributions/7125252/" target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-ink">▶ watch the recording</a>
           </p>
         </footer>
       </article>
