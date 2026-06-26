@@ -33,7 +33,9 @@ function SceneEmbed({ section }: { section: ArticleSection }) {
   }, []);
 
   const label = labelFor(section.scene);
-  const src = `${BASE}/embed/?scene=${section.scene}${section.step ? `&step=${section.step}` : ""}`;
+  // Always start embeds at the beginning (step 0) so the reader plays the
+  // scene's build themselves — don't jump to the final/spoiler frame.
+  const src = `${BASE}/embed/?scene=${section.scene}`;
 
   return (
     <figure ref={ref} className="my-7">
