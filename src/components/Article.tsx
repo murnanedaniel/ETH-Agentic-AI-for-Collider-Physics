@@ -17,17 +17,16 @@ function SceneEmbed({ section }: { section: ArticleSection }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [show, setShow] = useState(false);
 
+  // Window the embeds: keep an iframe mounted only while it's near the viewport,
+  // and UNLOAD it once it scrolls well away. Each iframe boots the whole app
+  // (plus Three.js scenes), so mounting all 19 at once overwhelms the renderer
+  // (jank + black/blank areas below the fold). This caps it to ~2-3 live.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setShow(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "500px 0px" },
+      ([entry]) => setShow(entry.isIntersecting),
+      { rootMargin: "300px 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -64,7 +63,10 @@ function SceneEmbed({ section }: { section: ArticleSection }) {
 export function Article() {
   return (
     <main className="min-h-screen paper-texture text-ink">
-      <article className="mx-auto max-w-[820px] px-5 py-16 md:py-24">
+      {/* Persistent paper backdrop: guarantees the cream background fills the
+          viewport at any scroll position (the body itself is dark). */}
+      <div aria-hidden className="fixed inset-0 -z-10 paper-texture" />
+      <article className="relative mx-auto max-w-[820px] px-5 py-16 md:py-24">
         {/* masthead */}
         <header className="mb-14">
           <div className="font-mono text-[11px] uppercase tracking-[0.3em] text-ink/45 mb-5">
