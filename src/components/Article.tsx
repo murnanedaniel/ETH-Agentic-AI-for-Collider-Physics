@@ -8,6 +8,15 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const RECORDING = "https://indico.cern.ch/event/1692774/contributions/7125252/";
 const REPO = "https://github.com/murnanedaniel/ETH-Agentic-AI-for-Collider-Physics";
 
+// The deck scenes are authored at one large "presentation" size, mixing
+// viewport units with FIXED pixels (text-[11px], w-[1700px]…) that don't scale
+// down. Dropped straight into a ~780px iframe they cramp and clip. So we render
+// each scene iframe at this fixed design canvas (16:10, wide enough for the
+// largest fixed element) and CSS-scale the whole iframe to the figure box —
+// every scene then looks exactly like the talk, just uniformly smaller.
+const DESIGN_W = 1920;
+const DESIGN_H = 1200; // 1920/1200 = 16/10, matches the figure's aspect
+
 function labelFor(scene: string) {
   return SCENES.find((s) => s.id === scene)?.label ?? scene;
 }
@@ -34,14 +43,34 @@ function useNearViewport(ref: React.RefObject<HTMLElement | null>) {
 // forwards wheel to the parent so it never traps scroll).
 function SceneEmbed({ section }: { section: ArticleSection }) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const boxRef = useRef<HTMLDivElement | null>(null);
   const show = useNearViewport(ref);
+  const [scale, setScale] = useState(0);
   const label = labelFor(section.scene!);
   const src = `${BASE}/embed/?scene=${section.scene}${section.step ? `&step=${section.step}` : ""}`;
+
+  // Scale the design-canvas iframe to whatever width the figure box has.
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) =>
+      setScale(entry.contentRect.width / DESIGN_W),
+    );
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
-    <figure ref={ref} className="my-7">
-      <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden ink-shadow border border-ink/12 bg-canvas">
-        {show ? (
-          <iframe src={src} title={label} loading="lazy" className="absolute inset-0 w-full h-full" style={{ border: "none" }} />
+    <figure ref={ref} className="my-9 relative left-1/2 -translate-x-1/2 w-[min(1120px,94vw)]">
+      <div ref={boxRef} className="relative w-full aspect-[16/10] rounded-xl overflow-hidden ink-shadow border border-ink/12 bg-canvas">
+        {show && scale > 0 ? (
+          <iframe
+            src={src}
+            title={label}
+            loading="lazy"
+            className="absolute top-0 left-0"
+            style={{ border: "none", width: DESIGN_W, height: DESIGN_H, transform: `scale(${scale})`, transformOrigin: "top left" }}
+          />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center font-mono text-[12px] text-ink/40">{label} · loading…</div>
         )}
@@ -63,7 +92,7 @@ function UrlEmbed({ section }: { section: ArticleSection }) {
   const [active, setActive] = useState(false);
   const label = section.embedLabel ?? "Collider 2031";
   return (
-    <figure ref={ref} className="my-7">
+    <figure ref={ref} className="my-9 relative left-1/2 -translate-x-1/2 w-[min(1120px,94vw)]">
       <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden ink-shadow border border-ink/12 bg-[#0a0e14]">
         {show ? (
           <>
