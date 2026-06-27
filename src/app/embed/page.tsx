@@ -25,7 +25,10 @@ export default function EmbedPage() {
   const scene = SCENES.find((s) => s.id === sceneId);
   const Comp = sceneId ? SCENE_COMPONENTS[sceneId] : undefined;
   const steps = Math.max(1, scene?.steps ?? 1);
-  const theme = scene && scene.act >= 3 ? "light" : "dark";
+  // The title slide is an act-1 (dark) scene but renders dark ink text on the
+  // cream paper supplied by Stage's PaperRollOverlay (absent here) — so embed
+  // it on the light/cream background or its text disappears.
+  const theme = scene && (scene.act >= 3 || scene.id === "title") ? "light" : "dark";
 
   const advance = useCallback(() => setStep((s) => (s + 1) % steps), [steps]);
   const rewind = useCallback(() => setStep((s) => (s - 1 + steps) % steps), [steps]);
