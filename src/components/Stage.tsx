@@ -8,6 +8,7 @@ import { useElapsed } from "@/lib/useElapsed";
 import { PresenterClock } from "./PresenterClock";
 import { PaperRollOverlay } from "./PaperRollOverlay";
 import { TempHud } from "./TempHud";
+import { ArticlePromo } from "./ArticlePromo";
 import { PlaceholderScene } from "./scenes/PlaceholderScene";
 import { SCENE_COMPONENTS, type SceneComponent } from "@/lib/sceneRegistry";
 
@@ -126,6 +127,8 @@ export function Stage() {
       <PaperRollOverlay target={rollTarget} durationMs={rollDurationMs} />
 
       <TempHud theme={theme} />
+
+      <ArticlePromo />
 
       {clockVisible && (
         <button
